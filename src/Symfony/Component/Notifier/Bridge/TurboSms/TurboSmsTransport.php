@@ -72,7 +72,7 @@ final class TurboSmsTransport extends AbstractTransport
                     'sender' => $this->from,
                     'recipients' => [$message->getPhone()],
                     'text' => $message->getSubject(),
-                ]
+                ],
             ],
         ]);
 
@@ -87,7 +87,7 @@ final class TurboSmsTransport extends AbstractTransport
 
         $error = $response->toArray(false);
 
-        throw new TransportException(sprintf('Unable to send SMS with TurboSMS: Error code %s with message "%s".', (string) $error['response_code'], $error['response_status']), $response);
+        throw new TransportException(sprintf('Unable to send SMS with TurboSMS: Error code %d with message "%s".', (int) $error['response_code'], $error['response_status']), $response);
     }
 
     private function assertValidFrom(): void
@@ -100,16 +100,16 @@ final class TurboSmsTransport extends AbstractTransport
     private function assertValidSubject(string $subject): void
     {
         // Detect if there is at least one cyrillic symbol in the text
-        if (false === preg_match("/\p{Cyrillic}/u", $subject)) {
-            $subjectLimit = self::SUBJECT_LATIN_LIMIT;
-            $symbols = 'latin';
-        } else {
+        if (1 === preg_match("/\p{Cyrillic}/u", $subject)) {
             $subjectLimit = self::SUBJECT_CYRILLIC_LIMIT;
             $symbols = 'cyrillic';
+        } else {
+            $subjectLimit = self::SUBJECT_LATIN_LIMIT;
+            $symbols = 'latin';
         }
 
         if (mb_strlen($subject, 'UTF-8') > $subjectLimit) {
-            throw new LengthException(sprintf('The subject length for % symbols of a TurboSMS message must not exceed %d characters.', $symbols, $subjectLimit));
+            throw new LengthException(sprintf('The subject length for "%s" symbols of a TurboSMS message must not exceed %d characters.', $symbols, $subjectLimit));
         }
     }
 }

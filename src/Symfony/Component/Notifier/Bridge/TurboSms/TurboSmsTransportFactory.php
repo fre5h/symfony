@@ -32,7 +32,7 @@ final class TurboSmsTransportFactory extends AbstractTransportFactory
             throw new UnsupportedSchemeException($dsn, 'turbosms', $this->getSupportedSchemes());
         }
 
-        $authToken = $this->getPassword($dsn);
+        $authToken = $this->getUser($dsn);
         $from = $dsn->getRequiredOption('from');
         $host = 'default' === $dsn->getHost() ? null : $dsn->getHost();
         $port = $dsn->getPort();

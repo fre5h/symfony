@@ -12,7 +12,7 @@ TURBOSMS_DSN=turbosms://AUTH_TOKEN@default?from=FROM
 
 where:
  - `AUTH_TOKEN` is your TurboSms auth token
- - `FROM` is your sender name
+ - `FROM` is your sender name, should be alpha-numeral, max 20 symbols and activated in your TurboSms account
 
 Resources
 ---------
