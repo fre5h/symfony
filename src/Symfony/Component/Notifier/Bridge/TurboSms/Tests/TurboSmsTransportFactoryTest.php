@@ -47,6 +47,6 @@ final class TurboSmsTransportFactoryTest extends TransportFactoryTestCase
     public function unsupportedSchemeProvider(): iterable
     {
         yield ['somethingElse://authToken@default?from=acme'];
-        yield ['somethingElse://authToken@default']; // missing "from" option
+        yield ['somethingElse://authToken@default'];
     }
 }
