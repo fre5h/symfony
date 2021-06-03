@@ -39,6 +39,8 @@ final class TurboSmsTransport extends AbstractTransport
 
     public function __construct(string $authToken, string $from, HttpClientInterface $client = null, EventDispatcherInterface $dispatcher = null)
     {
+        $this->assertValidFrom($from);
+
         $this->authToken = $authToken;
         $this->from = $from;
 
@@ -62,7 +64,6 @@ final class TurboSmsTransport extends AbstractTransport
         }
 
         $this->assertValidSubject($message->getSubject());
-        $this->assertValidFrom();
 
         $endpoint = sprintf('https://%s/message/send.json', $this->getEndpoint());
         $response = $this->client->request('POST', $endpoint, [
@@ -90,9 +91,9 @@ final class TurboSmsTransport extends AbstractTransport
         throw new TransportException(sprintf('Unable to send SMS with TurboSMS: Error code %d with message "%s".', (int) $error['response_code'], $error['response_status']), $response);
     }
 
-    private function assertValidFrom(): void
+    private function assertValidFrom(string $from): void
     {
-        if (mb_strlen($this->from, 'UTF-8') > self::SENDER_LIMIT) {
+        if (mb_strlen($from, 'UTF-8') > self::SENDER_LIMIT) {
             throw new LengthException(sprintf('The sender length of a TurboSMS message must not exceed %d characters.', self::SENDER_LIMIT));
         }
     }
