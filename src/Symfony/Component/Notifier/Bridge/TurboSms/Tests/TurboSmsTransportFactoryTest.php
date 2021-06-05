@@ -30,6 +30,10 @@ final class TurboSmsTransportFactoryTest extends TransportFactoryTestCase
         yield [
             'turbosms://host.test?from=acme',
             'turbosms://accountSid:authToken@host.test?from=acme',
+        ];
+
+        yield [
+            'turbosms://host.test?from=Symfony+Community',
             'turbosms://accountSid:authToken@host.test?from=Symfony Community',
         ];
     }
