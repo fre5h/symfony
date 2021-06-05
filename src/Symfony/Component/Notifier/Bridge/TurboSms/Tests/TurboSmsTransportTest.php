@@ -122,11 +122,11 @@ final class TurboSmsTransportTest extends TransportTestCase
 
     public function testInvalidFrom()
     {
-        $message = new SmsMessage('380931234567', 'Hello!');
-        $transport = new TurboSmsTransport('authToken', 'abcdefghijklmnopqrstu', $this->createMock(HttpClientInterface::class));
-
         $this->expectException(LengthException::class);
         $this->expectExceptionMessage('The sender length of a TurboSMS message must not exceed 20 characters.');
+
+        $message = new SmsMessage('380931234567', 'Hello!');
+        $transport = new TurboSmsTransport('authToken', 'abcdefghijklmnopqrstu', $this->createMock(HttpClientInterface::class));
 
         $transport->send($message);
     }
